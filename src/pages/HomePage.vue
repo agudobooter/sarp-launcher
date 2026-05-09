@@ -7,7 +7,8 @@ import EventsCarousel from "@/components/home/EventsCarousel.vue"
 import EventModal from "@/components/home/EventModal.vue"
 import LogoMark from "@/components/brand/LogoMark.vue"
 import ServerStatus from "@/components/home/ServerStatus.vue"
-import GroveStreetRun from "@/components/home/GroveStreetRun.vue"
+import GameCard from "@/components/home/GameCard.vue"
+import GameModal from "@/components/home/GameModal.vue"
 import { useHealthCheckStore } from "@/stores/healthCheck"
 import { useEvents } from "@/composables/useEvents"
 import { useRotatingTagline } from "@/composables/useRotatingTagline"
@@ -20,6 +21,7 @@ const { tagline } = useRotatingTagline()
 const { phase, launchMessage, launch } = useGameStatus()
 const blockHint = ref<string | null>(null)
 const selectedIndex = ref<number | null>(null)
+const gameOpen = ref(false)
 
 const host = import.meta.env.VITE_GAME_SERVER_IP
 const port = Number(import.meta.env.VITE_GAME_SERVER_PORT)
@@ -196,9 +198,18 @@ function showBlockHint() {
         />
       </div>
 
-      <EventsCarousel :events="events" :loading="eventsLoading" @open="openEvent" />
-      <GroveStreetRun />
+      <div class="flex w-full items-start gap-3">
+        <GameCard @open="gameOpen = true" />
+        <EventsCarousel
+          class="min-w-0 flex-1"
+          :events="events"
+          :loading="eventsLoading"
+          @open="openEvent"
+        />
+      </div>
     </div>
+
+    <GameModal v-if="gameOpen" @close="gameOpen = false" />
 
     <EventModal
       :events="events"
