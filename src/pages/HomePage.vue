@@ -7,6 +7,7 @@ import EventsCarousel from "@/components/home/EventsCarousel.vue"
 import EventModal from "@/components/home/EventModal.vue"
 import LogoMark from "@/components/brand/LogoMark.vue"
 import ServerStatus from "@/components/home/ServerStatus.vue"
+import GroveStreetRun from "@/components/home/GroveStreetRun.vue"
 import { useHealthCheckStore } from "@/stores/healthCheck"
 import { useEvents } from "@/composables/useEvents"
 import { useRotatingTagline } from "@/composables/useRotatingTagline"
@@ -196,6 +197,7 @@ function showBlockHint() {
       </div>
 
       <EventsCarousel :events="events" :loading="eventsLoading" @open="openEvent" />
+      <GroveStreetRun />
     </div>
 
     <EventModal

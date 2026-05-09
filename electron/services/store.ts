@@ -22,6 +22,9 @@ export interface LauncherStoreSchema {
   /** Last known window bounds + flags. Restored on next launch and clamped
    *  to a visible display before being applied. */
   windowState: WindowStateSchema | null
+
+  /** Best Score for minigame */
+  miniGameHighScore: number
 }
 
 const store = new Store<LauncherStoreSchema>({
@@ -33,6 +36,7 @@ const store = new Store<LauncherStoreSchema>({
     cacheInstallTempDir: null,
     installedCacheSize: null,
     windowState: null,
+    miniGameHighScore: 0,
   },
 })
 
