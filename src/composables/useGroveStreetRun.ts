@@ -14,8 +14,6 @@ type ObstacleKind = "car" | "cone" | "lspd" | "balla" | "sttam"
 interface Obstacle extends Rect {
   kind: ObstacleKind
   speed: number
-  // Sttam oscillates verticall
-  phase?: number
 }
 
 interface Particle {
@@ -201,20 +199,32 @@ function drawSttam(ctx: CanvasRenderingContext2D, o: Obstacle, frame: number) {
   ctx.fillStyle = "#000"
   ctx.fillRect(Math.round(o.x) + 9, Math.round(o.y) + 4, 3, 2)
   ctx.fillRect(Math.round(o.x) + o.w - 12, Math.round(o.y) + 4, 3, 2)
-
-  // Ban hammer
-  const hammerX = Math.round(o.x) + o.w - 2
-  const hammerY = Math.round(o.y) + 14
-  ctx.fillStyle = "#78716c"
-  ctx.fillRect(hammerX, hammerY, 3, 16) // handle
-  ctx.fillStyle = "#a8a29e"
-  ctx.fillRect(hammerX - 3, hammerY - 4, 9, 6) // head
-
-  // Label
-  ctx.fillStyle = "#fff"
-  ctx.font = "bold 5px monospace"
+  
+  // ban hammer
+  const hammerX = Math.round(o.x) + o.w - 1
+  const hammerY = Math.round(o.y) + 12
+  // glow hammer head
+  ctx.fillStyle = "rgba(220, 38, 38, 0.3)"
+  ctx.fillRect(hammerX - 6, hammerY - 7, 16, 12)
+  // handle
+  ctx.fillStyle = "#92400e"
+  ctx.fillRect(hammerX + 1, hammerY, 4, 18)
+   // Head
+  ctx.fillStyle = "#dc2626"
+  ctx.fillRect(hammerX - 4, hammerY - 5, 12, 8)
+  // "BAN" text on head
+  ctx.fillStyle = "#fca5a5"
+  ctx.font = "bold 8px system-ui, sans-serif"
   ctx.textAlign = "center"
-  ctx.fillText("ADMIN", Math.round(o.x) + o.w / 2, Math.round(o.y) + o.h - 2)
+  ctx.fillText("BAN", hammerX + 2, hammerY - 10)
+  ctx.textAlign = "left"
+
+  // Label "STTAM" trigger text
+  ctx.fillStyle = COL_STTAM
+  ctx.font = "bold 9px system-ui, sans-serif"
+  ctx.textAlign = "center"
+  const labelY = Math.round(o.y) - 12
+  ctx.fillText("STTAM", Math.round(o.x) + o.w / 2, labelY)
   ctx.textAlign = "left"
 }
 
@@ -412,12 +422,11 @@ export function useGroveStreetRun(
   function spawnSttam() {
     obstacles.push({
       x: CANVAS_W + 10,
-      y: GROUND_Y - STTAM_H - rand(0, 20),
+      y: GROUND_Y - STTAM_H,
       w: STTAM_W,
       h: STTAM_H,
       kind: "sttam",
       speed: gameSpeed + 1.2,
-      phase: 0,
     })
   }
 
@@ -504,12 +513,6 @@ export function useGroveStreetRun(
     for (let i = obstacles.length - 1; i >= 0; i--) {
       const o = obstacles[i]
       o.x -= o.speed
-
-      // Sttam oscillates
-      if (o.kind === "sttam" && o.phase !== undefined) {
-        o.phase += 0.06
-        o.y = GROUND_Y - STTAM_H - Math.sin(o.phase) * 18
-      }
 
       // Remove off-screen
       if (o.x + o.w < -10) {
