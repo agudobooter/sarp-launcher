@@ -42,8 +42,8 @@ const DUCK_H = 16
 const BASE_SPEED = 3.2
 const SPEED_INCREASE = 0.0008
 const MAX_SPEED = 9
-const OBSTACLE_INTERVAL_MIN = 55
-const OBSTACLE_INTERVAL_MAX = 120
+const OBSTACLE_INTERVAL_MIN = 80
+const OBSTACLE_INTERVAL_MAX = 160
 const STTAM_INTERVAL = 800
 const STTAM_W = 28
 const STTAM_H = 38
@@ -468,8 +468,8 @@ export function useGroveStreetRun(
       spawnObstacle()
       spawnCounter = 0
       nextSpawnAt = randInt(
-        Math.max(30, OBSTACLE_INTERVAL_MIN - frameCount * 0.01),
-        Math.max(50, OBSTACLE_INTERVAL_MAX - frameCount * 0.02),
+        Math.max(50, OBSTACLE_INTERVAL_MIN - frameCount * 0.01),
+        Math.max(80, OBSTACLE_INTERVAL_MAX - frameCount * 0.02),
       )
     }
     if (sttamCounter >= STTAM_INTERVAL && score.value >= 100) {
